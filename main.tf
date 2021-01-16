@@ -35,6 +35,16 @@ resource "tls_private_key" "ssh-key" {
   rsa_bits  = "4096"
 }
 
+resource "null_resource" "gcpkey" {
+  provisioner "local-exec" {
+    command = "echo \"${tls_private_key.ssh-key.private_key_pem}\" > gcpkey.pem"
+  }
+
+  provisioner "local-exec" {
+    command = "chmod 600 gcpkey.pem"
+  }
+}
+
 resource "google_compute_instance" "hashicat" {
   name         = "${var.prefix}-hashicat"
   zone         = "${var.region}-b"
