@@ -1,22 +1,16 @@
 #!/bin/bash
-# Script to deploy a very simple web application.
-# The web app has a customizable image and some text.
+# Script to install Python Selenium and Headless Chrome
 
-cat << EOM > /var/www/html/index.html
-<html>
-  <head><title>Meow!</title></head>
-  <body>
-  <div style="width:800px;margin: 0 auto">
+#Python Imports
+sudo apt -y update
+sudo apt -y install python3-pip
+pip3 install selenium
 
-  <!-- BEGIN -->
-  <center><img src="http://${PLACEHOLDER}/${WIDTH}/${HEIGHT}"></img></center>
-  <center><h2>Meow World!</h2></center>
-  Welcome to ${PREFIX}'s app. Replace this text with your own.
-  <!-- END -->
+#Install Chromedriver
+curl -O https://chromedriver.storage.googleapis.com/87.0.4280.88/chromedriver_linux64.zip
+sudo apt -y install unzip
+unzip chromedriver_linux64.zip
+sudo mv chromedriver /usr/local/bin/.
 
-  </div>
-  </body>
-</html>
-EOM
-
-echo "Script complete."
+#Install Chrome Browser
+sudo apt-get install chromium-browser
