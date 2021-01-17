@@ -99,7 +99,8 @@ resource "null_resource" "configure-cat-app" {
   provisioner "remote-exec" {
     inline = [
       "chmod +x *.sh",
-      "./deploy_app.sh"
+      "chmod +x *.py",
+      "./deploy_app.sh" 
     ]
 
     connection {
