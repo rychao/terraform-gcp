@@ -33,17 +33,17 @@ variable "machine_type" {
   default     = "f1-micro"
 }
 
-variable "height" {
-  default     = "720"
-  description = "Image height in pixels."
-}
-
-variable "width" {
-  default     = "1280"
-  description = "Image width in pixels."
-}
-
-variable "placeholder" {
-  default     = "https://github.com/rychao/terraform-gcp/blob/master/yoda.jpg"
-  description = "Image-as-a-service URL. Some other fun ones to try are fillmurray.com, placecage.com, placebeard.it, loremflickr.com, baconmockup.com, placeimg.com, placebear.com, placeskull.com, stevensegallery.com, placedog.net"
-}
+# variable "height" {
+#   default     = "720"
+#   description = "Image height in pixels."
+# }
+# 
+# variable "width" {
+#   default     = "1280"
+#   description = "Image width in pixels."
+# }
+#
+# variable "placeholder" {
+#   default     = "https://github.com/rychao/terraform-gcp/blob/master/yoda.jpg"
+#   description = "Image-as-a-service URL. Some other fun ones to try are fillmurray.com, placecage.com, placebeard.it, loremflickr.com, baconmockup.com, placeimg.com, placebear.com, placeskull.com, stevensegallery.com, placedog.net"
+# }
