@@ -13,4 +13,4 @@ unzip chromedriver_linux64.zip
 sudo mv chromedriver /usr/local/bin/.
 
 #Install Chrome Browser
-sudo apt-get install chromium-browser
+sudo apt-get -y install chromium-browser
