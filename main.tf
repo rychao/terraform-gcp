@@ -4,21 +4,21 @@ provider "google" {
   region  = var.region
 }
 
-resource "google_compute_network" "hashicat" {
+resource "google_compute_network" "pliny" {
   name                    = "${var.prefix}-vpc-${var.region}"
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "hashicat" {
+resource "google_compute_subnetwork" "pliny" {
   name          = "${var.prefix}-subnet"
   region        = var.region
-  network       = google_compute_network.hashicat.self_link
+  network       = google_compute_network.pliny.self_link
   ip_cidr_range = var.subnet_prefix
 }
 
 resource "google_compute_firewall" "http-server" {
   name    = "default-allow-ssh-http"
-  network = google_compute_network.hashicat.self_link
+  network = google_compute_network.pliny.self_link
 
   allow {
     protocol = "tcp"
@@ -45,7 +45,7 @@ resource "null_resource" "gcpkey" {
   }
 }
 
-resource "google_compute_instance" "hashicat" {
+resource "google_compute_instance" "pliny" {
   count        = var.instance_count
   name         = "${var.prefix}-instance-${count.index}"
   zone         = "${var.region}-${var.zone}"
@@ -58,7 +58,7 @@ resource "google_compute_instance" "hashicat" {
   }
 
   network_interface {
-    subnetwork = google_compute_subnetwork.hashicat.self_link
+    subnetwork = google_compute_subnetwork.pliny.self_link
     access_config {
     }
   }
@@ -70,15 +70,15 @@ resource "google_compute_instance" "hashicat" {
   tags = ["http-server"]
 
   labels = {
-    name = "hashicat"
+    name = "pliny"
   }
 
 }
 
-resource "null_resource" "configure-cat-app" {
+resource "null_resource" "configure-pliny-app" {
   count      = var.instance_count
   depends_on = [
-    google_compute_instance.hashicat,
+    google_compute_instance.pliny,
   ]
 
   triggers = {
@@ -94,7 +94,7 @@ resource "null_resource" "configure-cat-app" {
       user        = "ubuntu"
       timeout     = "300s"
       private_key = tls_private_key.ssh-key.private_key_pem
-      host        = element(google_compute_instance.hashicat.*.network_interface.0.access_config.0.nat_ip, count.index)
+      host        = element(google_compute_instance.pliny.*.network_interface.0.access_config.0.nat_ip, count.index)
     }
   }
 
@@ -110,7 +110,7 @@ resource "null_resource" "configure-cat-app" {
       user        = "ubuntu"
       timeout     = "300s"
       private_key = tls_private_key.ssh-key.private_key_pem
-      host        = element(google_compute_instance.hashicat.*.network_interface.0.access_config.0.nat_ip, count.index)
+      host        = element(google_compute_instance.pliny.*.network_interface.0.access_config.0.nat_ip, count.index)
     }
   }
 }
