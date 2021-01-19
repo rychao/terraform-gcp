@@ -46,8 +46,9 @@ resource "null_resource" "gcpkey" {
 }
 
 resource "google_compute_instance" "hashicat" {
-  name         = "${var.prefix}-hashicat"
-  zone         = "${var.region}-b"
+  count        = var.instance_count
+  name         = "${var.prefix}-instance-${count.index}"
+  zone         = "${var.region}-${var.zone}"
   machine_type = var.machine_type
 
   boot_disk {
@@ -75,6 +76,7 @@ resource "google_compute_instance" "hashicat" {
 }
 
 resource "null_resource" "configure-cat-app" {
+  count      = var.instance_count
   depends_on = [
     google_compute_instance.hashicat,
   ]
@@ -92,7 +94,7 @@ resource "null_resource" "configure-cat-app" {
       user        = "ubuntu"
       timeout     = "300s"
       private_key = tls_private_key.ssh-key.private_key_pem
-      host        = google_compute_instance.hashicat.network_interface.0.access_config.0.nat_ip
+      host        = element(google_compute_instance.hashicat.*.network_interface.0.access_config.0.nat_ip, count.index)
     }
   }
 
@@ -100,7 +102,7 @@ resource "null_resource" "configure-cat-app" {
     inline = [
       "chmod +x *.sh",
       "chmod +x *.py",
-      "./deploy_app.sh" 
+      "./deploy_app.sh"
     ]
 
     connection {
@@ -108,7 +110,7 @@ resource "null_resource" "configure-cat-app" {
       user        = "ubuntu"
       timeout     = "300s"
       private_key = tls_private_key.ssh-key.private_key_pem
-      host        = google_compute_instance.hashicat.network_interface.0.access_config.0.nat_ip
+      host        = element(google_compute_instance.hashicat.*.network_interface.0.access_config.0.nat_ip, count.index)
     }
   }
 }
