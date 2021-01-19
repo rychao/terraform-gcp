@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import json
 import string
 from selenium.webdriver.chrome.options import Options
+import sys
 
 global driver
 chromeOptions = Options()
@@ -102,7 +103,7 @@ class Scraper(object):
         f.write("clicked pay now button.\n")
 
 def main():
-    file = open('file.json')
+    file = open(sys.argv[1])
     elements = json.loads(file.read())
     url = (elements['url'])
     size = (elements['size'])
@@ -122,4 +123,5 @@ def main():
     test.scrape_init()
 
 if __name__ == "__main__":
- 	main()
+    sys.argv[:]
+    main()
