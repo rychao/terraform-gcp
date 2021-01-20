@@ -51,7 +51,7 @@ class Scraper(object):
 
         f = open("status.txt", "w+")
         driver.find_element_by_name('add').click()
-        f.write("added to size  cart.\n".format(size))
+        f.write("added to size {} cart.\n".format(size))
         driver.implicitly_wait(60) # wait for cart button
         driver.find_element_by_name('checkout').click()
         f.write("made it to contact page.\n")
