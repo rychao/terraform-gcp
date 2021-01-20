@@ -11,9 +11,9 @@ chromeOptions.headless = True #headless runs Chrome WITHOUT UI
 driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver", options=chromeOptions)
 
 class Scraper(object):
-    def __init__(self, url, size, email, firstName, lastName, address, city, zip, phone, cardNum, cardName, cardExp, ccv):
+    def __init__(self, url, email, firstName, lastName, address, city, zip, phone, cardNum, cardName, cardExp, ccv):
         self.url = url
-        self.size = size
+        # self.size = size #ADD back in argument
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -28,7 +28,7 @@ class Scraper(object):
 
     def scrape_init(self):
         url = self.url
-        size = self.size
+        size = sys.argv[2]
         print("Requested Size: ", size)
         driver.get(url)
 
@@ -106,7 +106,7 @@ def main():
     file = open(sys.argv[1])
     elements = json.loads(file.read())
     url = (elements['url'])
-    size = (elements['size'])
+    # size = (elements['size'])
     email = (elements['email'])
     firstName = (elements['firstName'])
     lastName = (elements['lastName'])
@@ -119,7 +119,8 @@ def main():
     cardExp = (elements['card expiry'])
     ccv = (elements['ccv'])
 
-    test = Scraper(url, size, email, firstName, lastName, address, city, zip, phone, cardNum, cardName, cardExp, ccv)
+    #add size in scraper argument
+    test = Scraper(url, email, firstName, lastName, address, city, zip, phone, cardNum, cardName, cardExp, ccv)
     test.scrape_init()
 
 if __name__ == "__main__":
