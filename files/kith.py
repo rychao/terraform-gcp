@@ -13,7 +13,6 @@ driver = webdriver.Chrome(executable_path="/usr/local/bin/chromedriver", options
 class Scraper(object):
     def __init__(self, url, email, firstName, lastName, address, city, zip, phone, cardNum, cardName, cardExp, ccv):
         self.url = url
-        # self.size = size #ADD back in argument
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -106,7 +105,6 @@ def main():
     file = open(sys.argv[1])
     elements = json.loads(file.read())
     url = (elements['url'])
-    # size = (elements['size'])
     email = (elements['email'])
     firstName = (elements['firstName'])
     lastName = (elements['lastName'])
@@ -119,7 +117,6 @@ def main():
     cardExp = (elements['card expiry'])
     ccv = (elements['ccv'])
 
-    #add size in scraper argument
     test = Scraper(url, email, firstName, lastName, address, city, zip, phone, cardNum, cardName, cardExp, ccv)
     test.scrape_init()
 
